@@ -6,7 +6,7 @@ CXXFLAGS = -std=c++17 -Wall
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Source files
-SRC = Breakout.cpp platform.cpp balls.cpp game.cpp blocks.cpp powerUp.cpp level.cpp startMenu.cpp
+SRC = cppFiles/Breakout.cpp cppFiles/platform.cpp cppFiles/balls.cpp cppFiles/game.cpp cppFiles/blocks.cpp cppFiles/powerUp.cpp cppFiles/level.cpp cppFiles/startMenu.cpp
 
 # Output executable
 TARGET = Breakout

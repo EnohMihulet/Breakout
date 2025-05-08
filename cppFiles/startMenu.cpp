@@ -1,10 +1,4 @@
-#include "startMenu.h"
-#include "game.h"
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/String.hpp>
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Window/Event.hpp>
+#include "../headers/startMenu.h"
 #include <SFML/Window/Keyboard.hpp>
 
 namespace Breakout {
@@ -80,10 +74,6 @@ namespace Breakout {
         startButton.text.setFillColor(sf::Color::Black);
         selected.setPosition(startButton.rect.getPosition());
         selectedType = startType;
-    }
-
-    void StartMenu::chooseSelected() {
-        
     }
 
     int StartMenu::playStartMenu(sf::RenderWindow& window, sf::Event event) {

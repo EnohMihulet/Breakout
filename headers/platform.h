@@ -1,11 +1,9 @@
 #pragma  once
-#include "balls.h"
-#include "powerUp.h"
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <vector>
-#include <SFML/Graphics/RectangleShape.hpp>
+#include "balls.h"
+#include "powerUp.h"
 #include "game.h"
 
 namespace Breakout {
@@ -18,11 +16,14 @@ namespace Breakout {
     const sf::Color platformColor = sf::Color::White;
 
     const float powerUpDuration = 5.f;
+    const float laserSpeed = 150;
+    const sf::Vector2f laserSize = sf::Vector2f(5, 15);
 
     struct ActivePUp {
         PUpType type;
         float remaining;
         float factor;
+        float laserCooldown = 0.f;
     };
 
     class Platform {
@@ -33,11 +34,12 @@ namespace Breakout {
             void move(const float dt, const int dir);
             int hitPowerUp(std::vector<PowerUp>& powerUps);
             void applyPowerUp(PUpType powerUpType, std::vector<Ball>& balls);
-            void update(float dt);
+            int update(float dt, std::vector<Block>& blocks);
 
             sf::RectangleShape& getRect();
             float getWidth();
             float getSpeed();
+            std::vector<sf::RectangleShape>& getLasers();
         private:
             float widthMultiplier;
             float speedMultiplier;
@@ -46,6 +48,7 @@ namespace Breakout {
             std::vector<ActivePUp> activePUps;
 
             void revertEffect(const ActivePUp& p);
+            int moveLaser(sf::RectangleShape& laser, float dt, std::vector<Block>& blocks);
     };  
 
     inline sf::RectangleShape& Platform::getRect() {
@@ -58,5 +61,9 @@ namespace Breakout {
 
     inline float Platform::getSpeed() {
         return platformSpeed * speedMultiplier;
+    }
+
+    inline std::vector<sf::RectangleShape>& Platform::getLasers() {
+        return lasers;
     }
 }

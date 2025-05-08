@@ -1,12 +1,10 @@
-#include "platform.h"
-#include "balls.h"
-#include "game.h"
-#include "powerUp.h"
-#include <SFML/Graphics/CircleShape.hpp>
+#include "../headers/platform.h"
+#include "../headers/game.h"
+#include "../headers/powerUp.h"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <cstddef>
+#include <cmath>
 #include <vector>
 
 namespace Breakout {
@@ -46,7 +44,9 @@ namespace Breakout {
     void Platform::applyPowerUp(PUpType type, std::vector<Ball>& balls) {
 
         if (type == PUpType::ExtraBall) {
-            balls.push_back(Ball());
+            balls.push_back(Ball(
+                getRandomVelocity(), 
+                sf::Vector2f(platformRect.getPosition().x, platformRect.getPosition().y - platformHeight)));
             return;
         }
         ActivePUp p;
@@ -76,14 +76,61 @@ namespace Breakout {
         }
     }
 
-    void Platform::update(float dt) {
-        for (int i = 0; i < int(activePUps.size()); ++i) {
-            activePUps[i].remaining -= dt;
-            if (activePUps[i].remaining <= 0) {
-                revertEffect(activePUps[i]);
-                activePUps.erase(activePUps.begin() + i);
-                return;
+    int Platform::moveLaser(sf::RectangleShape& laser, float dt, std::vector<Block>& blocks) {
+        sf::Vector2f nextPos = laser.getPosition() + sf::Vector2f(0, -laserSpeed * dt);
+        for (int i = 0; i < int(blocks.size()); ++i) {
+            if (blocks[i].getRect().getGlobalBounds().intersects(laser.getGlobalBounds())) {
+                return i;
+            }
+            if (nextPos.y <= 0) {
+                return -1;
             }
         }
+        laser.setPosition(nextPos);
+        return success;
+    }
+
+    int Platform::update(float dt, std::vector<Block>& blocks) {
+        for (auto it = activePUps.begin(); it != activePUps.end(); ) {
+            it->remaining -= dt;
+    
+            if (it->type == PUpType::Lasers) {
+                it->laserCooldown += dt;
+    
+                // Fire laser every 0.8 seconds
+                if (it->laserCooldown >= 0.8f) {
+                    it->laserCooldown = 0.f;
+    
+                    sf::RectangleShape laser(laserSize);
+                    laser.setPosition(platformRect.getPosition());
+                    laser.setFillColor(sf::Color::Red);
+    
+                    lasers.push_back(laser);
+                }
+            }
+    
+            if (it->remaining <= 0.f) {
+                revertEffect(*it);
+                it = activePUps.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    
+        for (auto it = lasers.begin(); it != lasers.end(); ) {
+            int blockIndex = moveLaser(*it, dt, blocks);
+            if (blockIndex == -1) {
+                it = lasers.erase(it);
+            } 
+            else if (blockIndex != success) {
+                lasers.erase(it);
+                return blockIndex;
+            }
+            else {
+                ++it;
+            }
+        }
+    
+        return success;
     }
 }

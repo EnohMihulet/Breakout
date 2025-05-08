@@ -1,12 +1,7 @@
 #pragma once
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Window/Cursor.hpp>
 #include <vector>
 #include "blocks.h"
-
 
 namespace Breakout {
 
@@ -23,7 +18,6 @@ namespace Breakout {
 
             int move(const sf::RectangleShape& platform, std::vector<Block>& blocks, const float dt);
             sf::CircleShape& getCircle();
-            void deleteBall();
 
         private:
             sf::CircleShape m_circle;
@@ -35,8 +29,8 @@ namespace Breakout {
             void hitPlatform(const sf::RectangleShape& platform);
             int hitBottom();
             int hitBlock(std::vector<Block>& blocks);
+            
     };
-
 
     inline sf::CircleShape& Ball::getCircle() {
         return m_circle;

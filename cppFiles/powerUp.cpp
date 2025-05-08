@@ -1,8 +1,5 @@
-#include "powerUp.h"
-#include "game.h"
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/System/Vector2.hpp>
-#include <vector>
+#include "../headers/powerUp.h"
+#include "../headers/game.h"
 
 namespace Breakout {
 

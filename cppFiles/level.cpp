@@ -1,11 +1,10 @@
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/Window.hpp>
-#include "level.h"
-#include "balls.h"
-#include "platform.h"
-#include "powerUp.h"
+#include "../headers/level.h"
+#include "../headers/game.h"
+#include "../headers/platform.h"
+#include "../headers/powerUp.h"
 
 namespace Breakout {
     Level::Level() 
@@ -65,6 +64,12 @@ namespace Breakout {
         for (PowerUp& p : powerUps) p.move(dt);
     }
 
+    void Level::updatePlatform() {
+        int blockIndex = platform.update(dt, blocks);
+        if (blockIndex == success) return;
+        blocks.erase(blocks.begin() + blockIndex);
+    }
+
     void Level::play() {
         dt = levelClock.restart().asSeconds();
 
@@ -74,11 +79,12 @@ namespace Breakout {
 
         updatePowerUps();
 
-        platform.update(dt);
+        updatePlatform();
     }
 
     void Level::drawLevel(sf::RenderWindow& window) {
         window.draw(platform.getRect());
+        for (sf::RectangleShape& l : platform.getLasers()) window.draw(l);
         for (Ball& b : balls) window.draw(b.getCircle());
         for (Block& b : blocks) window.draw(b.getRect());
         for (PowerUp& p : powerUps) window.draw(p.getCircle());

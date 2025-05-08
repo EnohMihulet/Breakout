@@ -1,20 +1,15 @@
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 #include <cstdlib>
 #include <vector>
-#include "balls.h"
-#include "blocks.h"
-#include "game.h"
-#include "platform.h"
+#include "../headers/balls.h"
+#include "../headers/blocks.h"
+#include "../headers/platform.h"
 
 namespace Breakout {
 
     Ball::Ball() 
-        : m_circle(sf::CircleShape(ballRadius)), m_velocity{sf::Vector2f(0, -ballSpeed)}, m_nextPos(sf::Vector2f(0, 0))
+        : m_circle(sf::CircleShape(ballRadius)), m_velocity{getRandomVelocity()}, m_nextPos(sf::Vector2f(0, 0))
     {
         m_circle.setOrigin(sf::Vector2f(ballRadius, ballRadius));
         m_circle.setPosition(sf::Vector2f(halfScreenWidth, screenHeight - 60));

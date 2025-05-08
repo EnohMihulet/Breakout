@@ -1,11 +1,8 @@
 #pragma  once
-#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
-#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
-#include <SFML/Window/Mouse.hpp>
 #include "game.h"
 
 namespace Breakout {
@@ -59,7 +56,6 @@ namespace Breakout {
             bool quitClicked(sf::RenderWindow& window, sf::Event event);
             void moveSelectedDown();
             void moveSelectedUp();
-            void chooseSelected();
         private:
             sf::Font font;
             sf::Text title;

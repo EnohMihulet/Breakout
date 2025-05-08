@@ -1,8 +1,6 @@
-#include "game.h"
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/Shape.hpp>
-#include <SFML/System/Vector2.hpp>
 #include <cmath>
+#include "../headers/game.h"
+#include "../headers/balls.h"
 
 namespace Breakout {
 
@@ -20,5 +18,12 @@ namespace Breakout {
 
     sf::Vector2f normalizedVector(const sf::Vector2f& a) {
         return a / magnitude(a);
+    }
+
+    sf::Vector2f getRandomVelocity() {
+        int x = rand() % (int(ballSpeed) - 200);     
+        int y = rand() % (int(ballSpeed));
+        int dir = rand() % 2 == 1 ? 1 : -1;
+        return normalizedVector(sf::Vector2f(x * dir,y)) * ballSpeed;
     }
 }

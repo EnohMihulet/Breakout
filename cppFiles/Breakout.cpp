@@ -1,25 +1,8 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Shape.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/Texture.hpp>
+#include "../headers/level.h"
+#include "../headers/startMenu.h"
 #include <SFML/System/Clock.hpp>
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/VideoMode.hpp>
-#include <SFML/Window/Window.hpp>
-#include <climits>
-#include <cmath>
-#include <cstdlib>
-#include "game.h"
-#include "level.h"
-#include "startMenu.h"
+#include <SFML/System/Time.hpp>
+#include <ctime>
 
 using namespace Breakout;
 
@@ -32,6 +15,8 @@ int main() {
     Level level;
     
     StartMenu startMenu = StartMenu();
+    sf::Clock gameClock;
+    gameClock.restart();
 
     // MAIN LOOP
     while (window.isOpen()) {
@@ -40,6 +25,7 @@ int main() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) window.close(); // Close window
         }
+        if (gameClock.getElapsedTime().asSeconds() <= .1) continue;
 
         if (gameState == "Start") {
             int startMenuVal = startMenu.playStartMenu(window, event);

@@ -1,11 +1,11 @@
 #pragma once
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <vector>
 #include "balls.h"
 #include "blocks.h"
 #include "platform.h"
 #include "powerUp.h"
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <vector>
 
 namespace Breakout {
 
@@ -39,6 +39,7 @@ namespace Breakout {
             void handleInput();
             void moveBalls();
             void updatePowerUps();
+            void updatePlatform();
     };
 
     inline Platform& Level::getPlatform() {
