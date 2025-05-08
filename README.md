@@ -1,2 +1,2 @@
 # Breakout
-Breakout clone
+Breakout clone written in C++ using SFML.
