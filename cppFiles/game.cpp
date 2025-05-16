@@ -1,8 +1,11 @@
 #include <cmath>
+#include <random>
 #include "../headers/game.h"
 #include "../headers/balls.h"
 
 namespace Breakout {
+
+    static std::mt19937_64 rng{ std::random_device{}() };
 
     float dot(const sf::Vector2f& a, const sf::Vector2f& b) {
         return a.x * b.x + a.y * b.y;
@@ -21,9 +24,11 @@ namespace Breakout {
     }
 
     sf::Vector2f getRandomVelocity() {
-        int x = rand() % (int(ballSpeed) - 200);     
-        int y = rand() % (int(ballSpeed));
-        int dir = rand() % 2 == 1 ? 1 : -1;
-        return normalizedVector(sf::Vector2f(x * dir,y)) * ballSpeed;
-    }
+        static std::uniform_real_distribution<float> dist(-3.14/4.f, 3.14/4.f);
+        float offset = dist(rng);
+
+        float x = std::sin(offset) * ballSpeed;
+        float y = -std::cos(offset) * ballSpeed;
+        return sf::Vector2f{x, y};
+    } 
 }

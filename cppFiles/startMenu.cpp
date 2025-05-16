@@ -3,7 +3,6 @@
 
 namespace Breakout {
     StartMenu::StartMenu()
-    : title(), startButton(), quitButton(), selected()
 {
     font.loadFromFile("../../Roboto/Roboto-VariableFont_wdth,wght.ttf");
 
@@ -77,9 +76,11 @@ namespace Breakout {
     }
 
     int StartMenu::playStartMenu(sf::RenderWindow& window, sf::Event event) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) moveSelectedDown();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) moveSelectedUp();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S)
+            moveSelectedDown();
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::W)
+            moveSelectedUp();
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
             if (selectedType == startType) return start;
             if (selectedType == quitType) return quit;
         }

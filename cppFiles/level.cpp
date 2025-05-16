@@ -1,26 +1,35 @@
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <vector>
 #include "../headers/level.h"
 #include "../headers/game.h"
 #include "../headers/platform.h"
 #include "../headers/powerUp.h"
 
 namespace Breakout {
-    Level::Level() 
-        : platform()
-    {
+    Level::Level(){}
+    void Level::startGame(const int levelIndex) {
+        blocks.clear();
+        powerUps.clear();
+        balls.clear();
+        dt = levelClock.restart().asSeconds();
+        platform = Platform();
         balls.push_back(Ball());
+        generateBlocks(levelIndex);
     }
 
-    void Level::generateBlocks() {
-        int blockNum = screenWidth / (blockWidth + blockGap);
+    void Level::generateBlocks(const int levelIndex) {
         int sideOffset = (screenWidth % (blockWidth + blockGap)) / 2;
         int xpos = sideOffset + (blockWidth / 2);
-        for (int y = 1; y < 6; ++y) {
-            for (int i = 0; i < blockNum; ++i) {
-                sf::Vector2f pos = sf::Vector2f(xpos + (blockWidth + blockGap) * i, y * (blockHeight + blockGap));
-                Block block = Block(pos, y, i, 0, colors[y - 1]);
+        auto levelGrid = levels[levelIndex];
+        for (int y = 0; y < int(levelGrid.size()); ++y) {
+            for (int i = 0; i < int(levelGrid[y].size()); ++i) {
+                if (levelGrid[y][i] == 0) continue;
+                sf::Vector2f pos = sf::Vector2f(xpos + (blockWidth + blockGap) * i, (y+1) * (blockHeight + blockGap));
+                Block block = Block(pos, (y+1), i, 0, colors[y]);
                 blocks.push_back(block);
             }
         }

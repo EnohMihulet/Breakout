@@ -49,7 +49,7 @@ namespace Breakout {
     class StartMenu {
         public:
             StartMenu();
-
+            sf::Font font;
             int playStartMenu(sf::RenderWindow& window, sf::Event event);
             void drawStartMenu(sf::RenderWindow& window);
             bool startClicked(sf::RenderWindow& window, sf::Event event);
@@ -57,7 +57,7 @@ namespace Breakout {
             void moveSelectedDown();
             void moveSelectedUp();
         private:
-            sf::Font font;
+            
             sf::Text title;
             Button startButton;
             Button quitButton;

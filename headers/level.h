@@ -22,7 +22,7 @@ namespace Breakout {
             std::vector<PowerUp>& getPowerUps();
             std::vector<Block>& getBlocks();
 
-            void generateBlocks();
+            void startGame(const int levelIndex);
             void play();
             void drawLevel(sf::RenderWindow& window);
             int levelState();
@@ -33,13 +33,14 @@ namespace Breakout {
             std::vector<Ball> balls;
             std::vector<PowerUp> powerUps;
             std::vector<Block> blocks;
-            float dt;
+            float dt = 0;
 
             void movePowerups();
             void handleInput();
             void moveBalls();
             void updatePowerUps();
             void updatePlatform();
+            void generateBlocks(const int levelIndex);
     };
 
     inline Platform& Level::getPlatform() {
@@ -58,4 +59,30 @@ namespace Breakout {
         return blocks;
     }
 
+
+    const std::vector<std::vector<int>> level1 = {
+        {1,0,1,0,1,0,1,0,1,0,1,0,1,0},
+        {1,0,1,0,1,0,1,0,1,0,1,0,1,0},
+        {1,0,1,0,1,0,1,0,1,0,1,0,1,0},
+        {1,0,1,0,1,0,1,0,1,0,1,0,1,0},
+        {1,0,1,0,1,0,1,0,1,0,1,0,1,0}
+    };
+
+    const std::vector<std::vector<int>> level2 = {
+        {1,0,1,0,1,0,1,0,1,0,1,0,1,0},
+        {0,1,0,1,0,1,0,1,0,1,0,1,0,1},
+        {1,0,1,0,1,0,1,0,1,0,1,0,1,0},
+        {0,1,0,1,0,1,0,1,0,1,0,1,0,1},
+        {1,0,1,0,1,0,1,0,1,0,1,0,1,0}
+    };
+    
+    const std::vector<std::vector<int>> level3 = {
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    };
+
+    const std::vector<std::vector<std::vector<int>>> levels = {level1, level2, level3};
 }

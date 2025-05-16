@@ -1,5 +1,6 @@
 #include "../headers/level.h"
 #include "../headers/startMenu.h"
+#include "../headers/levelSelectMenu.h"
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
 #include <ctime>
@@ -12,9 +13,10 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Breakout");
     
     std::string gameState = "Start";
-    Level level;
-    
     StartMenu startMenu = StartMenu();
+    Level level = Level();
+    LevelSelectMenu levelSelectMenu(startMenu.font);
+
     sf::Clock gameClock;
     gameClock.restart();
 
@@ -24,23 +26,30 @@ int main() {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) window.close(); // Close window
-        }
-        if (gameClock.getElapsedTime().asSeconds() <= .1) continue;
-
-        if (gameState == "Start") {
-            int startMenuVal = startMenu.playStartMenu(window, event);
-            if (startMenuVal == start) {
-                level = Level();
-                level.generateBlocks();
-                gameState = "Play";
+            if (gameState == "Start") {
+                int startMenuVal = startMenu.playStartMenu(window, event);
+                if (startMenuVal == start) {
+                    levelSelectMenu = LevelSelectMenu(startMenu.font);
+                    gameState = "Levels";
+                }
+                else if (startMenuVal == quit) window.close();
+                
+                window.clear();
+                startMenu.drawStartMenu(window);
+                window.display();
             }
-            else if (startMenuVal == quit) window.close();
-            
-            window.clear();
-            startMenu.drawStartMenu(window);
-            window.display();
+            else if (gameState == "Levels") {
+                int levelIndex = levelSelectMenu.playLevelMenu(window, event);
+                if (levelIndex != -1) {
+                    level.startGame(levelIndex); 
+                    gameState = "Play";
+                }
+                window.clear();
+                levelSelectMenu.drawLevelMenu(window);
+                window.display();
+            }
         }
-        else {
+        if (gameState == "Play") {
             level.play();
             if (level.levelState() == win) {
                 gameState = "Start";
